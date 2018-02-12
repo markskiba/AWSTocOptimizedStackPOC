@@ -27,7 +27,7 @@
       "Type" : "AWS::Serverless::Function",
       "Properties": {
         "Handler": "AWSServerless1::AWSServerless1.LambdaEntryPoint::FunctionHandlerAsync",
-        "Runtime": "dotnetcore1.0",
+        "Runtime": "dotnetcore2.0",
         "CodeUri": "",
         "MemorySize": 256,
         "Timeout": 30,

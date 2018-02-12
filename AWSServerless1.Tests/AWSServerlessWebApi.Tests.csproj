@@ -29,12 +29,18 @@
 
   <ItemGroup>
 
+    <PackageReference Include="Amazon.DynamoDb" Version="0.10.6" />
+
+    <PackageReference Include="Amazon.Lambda.AspNetCoreServer" Version="2.0.1" />
+
     <PackageReference Include="Amazon.Lambda.Core" Version="1.0.0" />
     <PackageReference Include="Amazon.Lambda.TestUtilities" Version="1.0.0" />
+    <PackageReference Include="AWSSDK.Core" Version="3.3.21.11" />
     <PackageReference Include="AWSSDK.S3" Version="3.3.17" />
 
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.0.0" />
     <PackageReference Include="AWSSDK.Extensions.NETCore.Setup" Version="3.3.4" />
+    <PackageReference Include="ServiceStack.Kestrel" Version="5.0.2" />
     <PackageReference Include="SwashBuckle.AspNetCore.MicrosoftExtensions" Version="0.4.0" />
 
     <PackageReference Include="xunit" Version="2.3.1" />
