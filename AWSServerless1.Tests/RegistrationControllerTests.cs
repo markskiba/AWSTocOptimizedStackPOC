@@ -11,9 +11,9 @@ using Xunit;
 
 namespace AWSServerlessWebApi.Tests
 {
-    public class RegistrationControllerTests : IDisposable
+    public class RegistrationControllerTests 
     {
-		IConfigurationRoot Configuration { get; set; }
+		//IConfigurationRoot Configuration { get; set; }
 
 		[Fact]
 		public async Task TestPost() {

@@ -12,7 +12,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SPA", "SPA", "{1AC2BB83-434
 		RegistrationTest.html = RegistrationTest.html
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpaPocAngular", "SpaPocAngular\SpaPocAngular.csproj", "{35F29B2E-E146-4CE1-8B86-6B4D82A44221}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpaPocAngular", "SpaPocAngular\SpaPocAngular.csproj", "{35F29B2E-E146-4CE1-8B86-6B4D82A44221}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynamoDBDataModelSample1", "DynamoDBDataModelSample1\DynamoDBDataModelSample1.csproj", "{11415A56-F561-4E91-8BCF-2719164D1398}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -32,6 +34,10 @@ Global
 		{35F29B2E-E146-4CE1-8B86-6B4D82A44221}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{35F29B2E-E146-4CE1-8B86-6B4D82A44221}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{35F29B2E-E146-4CE1-8B86-6B4D82A44221}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11415A56-F561-4E91-8BCF-2719164D1398}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11415A56-F561-4E91-8BCF-2719164D1398}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11415A56-F561-4E91-8BCF-2719164D1398}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11415A56-F561-4E91-8BCF-2719164D1398}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

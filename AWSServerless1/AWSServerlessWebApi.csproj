@@ -58,10 +58,4 @@
     <DotNetCliToolReference Include="Amazon.Lambda.Tools" Version="2.1.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="DAL\" />
-    <Folder Include="Service\" />
-    <Folder Include="SPA\" />
-  </ItemGroup>
-
 </Project>

@@ -1,15 +1,20 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.Model;
+using Amazon.Lambda.APIGatewayEvents;
 using Amazon.S3;
 using Amazon.S3.Model;
+using AWSServerlessWebApi.DAL;
+using AWSServerlessWebApi.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 
 
 namespace AWSServerlessWebApi.Controllers
@@ -21,13 +26,15 @@ namespace AWSServerlessWebApi.Controllers
 	[Route("api/[controller]")]
 	class RegistrationController : Controller
 	{
-		private AmazonDynamoDBClient AmazonDynamoDbClient { get; set; }
+		
 
 		ILogger Logger { get; set; }
 
+		IDataStore DataStore { get; set; }
+
 		public RegistrationController(ILogger<S3ProxyController> logger) {
 			Logger = logger;
-			AmazonDynamoDbClient = new AmazonDynamoDBClient(); // todo: can this get passed in like logger?
+			DataStore = new DynamoDataStore();
 		}
 
 		/// <summary>
@@ -40,14 +47,7 @@ namespace AWSServerlessWebApi.Controllers
 		public async Task<GetItemResponse> Get(string userID) {
 			GetItemResponse response=null;
 			try {
-				response = await AmazonDynamoDbClient.GetItemAsync(
-												  new GetItemRequest(
-																	 "Users",
-																	 new Dictionary<string, AttributeValue>()
-																		 {
-																			{ userID, new AttributeValue("Test")}
-																		 }
-																	 ));
+				var user = DataStore.GetUserByID(userID);
 			}
 			catch (AmazonS3Exception e)
 			{
@@ -62,51 +62,37 @@ namespace AWSServerlessWebApi.Controllers
 		/// <summary>
 		/// Register user with info passed in via
 		/// </summary>
-		/// <returns>HttpResponse</returns>
+		/// <returns>void</returns>
 		[HttpPost]
-		public async Task<HttpResponseMessage> Post()
+		public void Post([FromBody]string value)
 		{
-			// Copy the request body into a seekable stream required by the AWS SDK for .NET.
-			var seekableStream = new MemoryStream();
-			await this.Request.Body.CopyToAsync(seekableStream);
-			seekableStream.Position = 0;
-
-			var putRequest = new PutObjectRequest
-								 {
-									 InputStream = seekableStream
-								 };
-
 			try
 			{
-				// TODO: add stream to DynamoDB
-				var response = await AmazonDynamoDbClient.PutItemAsync(
-													    new PutItemRequest(
-																		   "Users",
-																		   new Dictionary<string, AttributeValue>
-																			   {
-																				   {
-																					   "UserName",
-																					   new AttributeValue("TestUser")
-																				   }
-																			   }
-																		  )
-													   );
-				Logger.LogInformation($"Put new user to table Users. user: {seekableStream}");
+				var registrationRequest = JsonConvert.DeserializeObject<RegistrationRequest>(value);
+				// Add to Identity Server
+				Logger.LogInformation($"Registered new user in Cognito. user: {registrationRequest.UserName}");
+				// Add to User Table
+				var user = new User()
+							   {
+								   EMail = registrationRequest.EMailAddress,
+								   UserName = registrationRequest.UserName
+							   };
+				DataStore.AddUser(user);
+				Logger.LogInformation($"Registered new user to table Users. user: {registrationRequest.UserName}");
+				// Add to Account Table
+				// Todo: add to account table
 			}
 			catch (AmazonDynamoDBException e)
 			{
 				this.Response.StatusCode = (int)e.StatusCode;
 				var writer = new StreamWriter(this.Response.Body);
 				writer.Write(e.Message);
-				return new HttpResponseMessage
-						   {
-							   ReasonPhrase = (string)e.Message
-						   };
-
 			}
-			return new HttpResponseMessage
-					   {   StatusCode = HttpStatusCode.OK
-					   };
+			catch (Exception exc)
+			{
+				var writer = new StreamWriter(this.Response.Body);
+				writer.Write(exc.Message);
+			}
 		}
 	}
 }

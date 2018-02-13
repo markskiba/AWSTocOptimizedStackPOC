@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Amazon.DynamoDBv2.DataModel;
 
 namespace AWSServerlessWebApi.Model
 {
@@ -8,16 +9,22 @@ namespace AWSServerlessWebApi.Model
 	/// User table data
 	///</summary> 
 	/// <inheritdoc />
+	[DynamoDBTable("Users")]
 	public class User: Trackable {
+		[DynamoDBHashKey]
+		public string UserID { get; set; }
+
 		/// <summary>
 		/// User Name
 		/// </summary>
-		public string UserName;
+		[DynamoDBProperty("UserName")]
+		public string UserName { get; set; }
 
 		/// <summary>
 		/// Password
 		/// </summary>
-		public string Password;
+		[DynamoDBProperty("EMail")]
+		public string EMail { get; set; }
 
 
 	}

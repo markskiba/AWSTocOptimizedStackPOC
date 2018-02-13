@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace AWSServerlessWebApi.Model
+namespace AWSServerlessWebApi.Service
 {
-    class Registration
+    class RegistrationService
     {
     }
 }

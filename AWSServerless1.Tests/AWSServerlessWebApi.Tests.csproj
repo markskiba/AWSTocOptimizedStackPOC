@@ -12,7 +12,7 @@
 
   <ItemGroup>
     <None Remove="SampleRequests\RegistrationController-Post.json" />
-    <None Remove="SampleRequests\S3ProxyController-Put - Copy.json" />
+    <None Remove="SampleRequests\ValuesController-Post.json" />
   </ItemGroup>
 
   <ItemGroup>
@@ -22,9 +22,7 @@
     <Content Include="SampleRequests\RegistrationController-Post.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="SampleRequests\S3ProxyController-Put - Copy.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <Content Include="SampleRequests\ValuesController-Post.json" />
   </ItemGroup>  
 
   <ItemGroup>
