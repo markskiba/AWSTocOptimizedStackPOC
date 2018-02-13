@@ -11,6 +11,7 @@ using Amazon.S3;
 using Amazon.S3.Model;
 using AWSServerlessWebApi.DAL;
 using AWSServerlessWebApi.Model;
+using AWSServerlessWebApi.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -32,7 +33,7 @@ namespace AWSServerlessWebApi.Controllers
 
 		IDataStore DataStore { get; set; }
 
-		public RegistrationController(ILogger<S3ProxyController> logger) {
+		public RegistrationController(ILogger logger) {
 			Logger = logger;
 			DataStore = new DynamoDataStore();
 		}
@@ -64,23 +65,13 @@ namespace AWSServerlessWebApi.Controllers
 		/// </summary>
 		/// <returns>void</returns>
 		[HttpPost]
-		public void Post([FromBody]string value)
+		public async void Post([FromBody]string value)
 		{
 			try
 			{
 				var registrationRequest = JsonConvert.DeserializeObject<RegistrationRequest>(value);
 				// Add to Identity Server
-				Logger.LogInformation($"Registered new user in Cognito. user: {registrationRequest.UserName}");
-				// Add to User Table
-				var user = new User()
-							   {
-								   EMail = registrationRequest.EMailAddress,
-								   UserName = registrationRequest.UserName
-							   };
-				DataStore.AddUser(user);
-				Logger.LogInformation($"Registered new user to table Users. user: {registrationRequest.UserName}");
-				// Add to Account Table
-				// Todo: add to account table
+				await RegistrationService.AddRegistrationAsync(DataStore, Logger, registrationRequest);
 			}
 			catch (AmazonDynamoDBException e)
 			{

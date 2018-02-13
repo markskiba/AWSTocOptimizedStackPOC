@@ -13,11 +13,44 @@ namespace AWSServerlessWebApi.DAL
 {
 	public class DynamoDataStore : IDataStore {
 		public DynamoDBContext Context { get; set; }
-		private AmazonDynamoDBClient AmazonDynamoDbClient { get; set; }
+		private AmazonDynamoDBClient DbClient { get; set; }
 
 		public DynamoDataStore() {
-			AmazonDynamoDbClient = new AmazonDynamoDBClient(); // todo: can this get passed in like logger?
-			Context = new DynamoDBContext(AmazonDynamoDbClient);
+			DbClient = new AmazonDynamoDBClient(); // todo: can this get passed in like logger?
+			Context = new DynamoDBContext(DbClient);
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <returns></returns>
+		public async Task<bool> InitializeTables() {
+			List<string> currentTables = DbClient.ListTablesAsync().Result.TableNames;
+			bool tablesAdded = false;
+			if (!currentTables.Contains("Users"))
+			{
+				Console.WriteLine("Table Actors does not exist, creating");
+				await DbClient.CreateTableAsync(new CreateTableRequest
+				{
+					TableName = "Users",
+					ProvisionedThroughput = new ProvisionedThroughput { ReadCapacityUnits = 3, WriteCapacityUnits = 1 },
+					KeySchema = new List<KeySchemaElement>
+														   {
+															   new KeySchemaElement
+																   {
+																	   AttributeName = "UserID",
+																	   KeyType = KeyType.HASH
+																   }
+														   },
+					AttributeDefinitions = new List<AttributeDefinition>
+																	  {
+																		  new AttributeDefinition { AttributeName = "UserName", AttributeType = ScalarAttributeType.S },
+																		  new AttributeDefinition { AttributeName = "EMailAddress", AttributeType = ScalarAttributeType.S }
+																	  }
+				});
+				tablesAdded = true;
+			}
+			return tablesAdded;
 		}
 
 		/// <inheritdoc />
@@ -27,7 +60,6 @@ namespace AWSServerlessWebApi.DAL
 		/// <returns></returns>
 		public User GetUserByID(string userID) {
 			var userSearch = Context.QueryAsync<User>(userID,QueryOperator.Equal,null);
-			// TODO: fill user from response
 			return (userSearch.ConvertTo<User>());
 		}
 
