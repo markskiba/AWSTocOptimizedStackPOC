@@ -25,7 +25,7 @@ namespace AWSServerlessWebApi.Controllers
 	/// Supplier Portal Registration 
 	/// </summary>
 	[Route("api/[controller]")]
-	class RegistrationController : Controller
+	public class RegistrationController : Controller
 	{
 		
 
