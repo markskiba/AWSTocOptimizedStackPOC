@@ -16,8 +16,8 @@ namespace AWSServerlessWebApi.DAL
 		private AmazonDynamoDBClient DbClient { get; set; }
 
 		public DynamoDataStore() {
-			DbClient = new AmazonDynamoDBClient(); // todo: can this get passed in like logger?
-			Context = new DynamoDBContext(DbClient);
+			//DbClient = new AmazonDynamoDBClient(); // todo: can this get passed in like logger?
+			//Context = new DynamoDBContext(DbClient);
 		}
 
 		/// <summary>
@@ -69,7 +69,7 @@ namespace AWSServerlessWebApi.DAL
 		/// <param name="user"></param>
 		/// <returns></returns>
 		public void AddUser (User user) {
-			Context.SaveAsync(user);
+			//Context.SaveAsync(user);
 		}
 	}
 }

@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using ServiceStack;
 
 
 namespace AWSServerlessWebApi.Controllers
@@ -24,7 +25,7 @@ namespace AWSServerlessWebApi.Controllers
 	/// <summary>
 	/// Supplier Portal Registration 
 	/// </summary>
-	[Route("api/[controller]")]
+	[Microsoft.AspNetCore.Mvc.Route("api/[controller]")]
 	public class RegistrationController : Controller
 	{
 		
@@ -33,9 +34,18 @@ namespace AWSServerlessWebApi.Controllers
 
 		IDataStore DataStore { get; set; }
 
-		public RegistrationController(ILogger logger) {
+		private RegistrationService RegService { get; set; }
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="logger"></param>
+		public RegistrationController(ILogger<RegistrationController> logger) {
 			Logger = logger;
 			DataStore = new DynamoDataStore();
+			RegService = new RegistrationService();
+			// TODO: setup logger and datastore for service
+			RegService.DataStore = DataStore;
 		}
 
 		/// <summary>
@@ -44,19 +54,18 @@ namespace AWSServerlessWebApi.Controllers
 		/// <param name="userID"></param>
 		/// <returns></returns>
 		[HttpGet("{userID}")]
-		[Authorize]
-		public async Task<GetItemResponse> Get(string userID) {
-			GetItemResponse response=null;
+		public JsonResult Get(string userID) {
+			JsonResult result;
 			try {
 				var user = DataStore.GetUserByID(userID);
+				result = new JsonResult(user);
 			}
-			catch (AmazonS3Exception e)
+			catch (AmazonDynamoDBException e)
 			{
-				this.Response.StatusCode = (int)e.StatusCode;
-				var writer = new StreamWriter(this.Response.Body);
-				writer.Write(e.Message);
+				result = new JsonResult(e);
+				result.StatusCode = (int)e.StatusCode;
 			}
-			return response;
+			return result;
 		}
 
 
@@ -65,13 +74,19 @@ namespace AWSServerlessWebApi.Controllers
 		/// </summary>
 		/// <returns>void</returns>
 		[HttpPost]
-		public async void Post([FromBody]string value)
+		public async void Post() 
 		{
 			try
 			{
-				var registrationRequest = JsonConvert.DeserializeObject<RegistrationRequest>(value);
-				// Add to Identity Server
-				await RegistrationService.AddRegistrationAsync(DataStore, Logger, registrationRequest);
+				//var seekableStream = new MemoryStream();
+				//await this.Request.Body.CopyToAsync(seekableStream);
+				//seekableStream.Position = 0;
+
+				var sr = new StreamReader(Request.Body);
+				string request = await sr.ReadToEndAsync();
+				var registrationRequest = JsonConvert.DeserializeObject<RegistrationRequest>(request);
+				//// Add to Identity Server
+				await RegService.AddRegistrationAsync(registrationRequest);
 			}
 			catch (AmazonDynamoDBException e)
 			{

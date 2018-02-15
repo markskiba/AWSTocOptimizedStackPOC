@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Amazon.DynamoDBv2.DataModel;
 
 namespace AWSServerlessWebApi.Model
 {
@@ -9,6 +10,7 @@ namespace AWSServerlessWebApi.Model
 		/// <summary>
 		/// Company Name
 		/// </summary>
+		[DynamoDBProperty("UserName")]
 		public string CompanyName;
 	}
 }

@@ -2,6 +2,9 @@
 
 namespace AWSServerlessWebApi.Controllers
 {
+	/// <summary>
+	/// RegistrationRequest message for Registration service post
+	/// </summary>
 	public class RegistrationRequest
 	{
 		public string UserName { get; set; }

@@ -11,8 +11,7 @@ namespace AWSServerlessWebApi.Model
 	/// <inheritdoc />
 	[DynamoDBTable("Users")]
 	public class User: Trackable {
-		[DynamoDBHashKey]
-		public string UserID { get; set; }
+
 
 		/// <summary>
 		/// User Name
