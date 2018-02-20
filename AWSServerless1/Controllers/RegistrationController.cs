@@ -1,22 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
 using Amazon.DynamoDBv2;
-using Amazon.DynamoDBv2.Model;
-using Amazon.Lambda.APIGatewayEvents;
-using Amazon.S3;
-using Amazon.S3.Model;
-using AWSServerlessWebApi.DAL;
-using AWSServerlessWebApi.Model;
 using AWSServerlessWebApi.Service;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using ServiceStack;
 
 
 namespace AWSServerlessWebApi.Controllers
@@ -28,13 +16,11 @@ namespace AWSServerlessWebApi.Controllers
 	[Microsoft.AspNetCore.Mvc.Route("api/[controller]")]
 	public class RegistrationController : Controller
 	{
-		
-
 		ILogger Logger { get; set; }
 
-		IDataStore DataStore { get; set; }
 
 		private RegistrationService RegService { get; set; }
+
 
 		/// <summary>
 		/// 
@@ -42,10 +28,8 @@ namespace AWSServerlessWebApi.Controllers
 		/// <param name="logger"></param>
 		public RegistrationController(ILogger<RegistrationController> logger) {
 			Logger = logger;
-			DataStore = new DynamoDataStore();
-			RegService = new RegistrationService();
-			// TODO: setup logger and datastore for service
-			RegService.DataStore = DataStore;
+
+			RegService = new RegistrationService(logger);
 		}
 
 		/// <summary>
@@ -55,16 +39,16 @@ namespace AWSServerlessWebApi.Controllers
 		/// <returns></returns>
 		[HttpGet("{userID}")]
 		public JsonResult Get(string userID) {
-			JsonResult result;
-			try {
-				var user = DataStore.GetUserByID(userID);
-				result = new JsonResult(user);
-			}
-			catch (AmazonDynamoDBException e)
-			{
-				result = new JsonResult(e);
-				result.StatusCode = (int)e.StatusCode;
-			}
+			JsonResult result=null;
+			//try {
+			//	var user = DataStore.GetUserByID(userID);
+			//	result = new JsonResult(user);
+			//}
+			//catch (AmazonDynamoDBException e)
+			//{
+			//	result = new JsonResult(e);
+			//	result.StatusCode = (int)e.StatusCode;
+			//}
 			return result;
 		}
 
@@ -86,18 +70,15 @@ namespace AWSServerlessWebApi.Controllers
 				string request = await sr.ReadToEndAsync();
 				var registrationRequest = JsonConvert.DeserializeObject<RegistrationRequest>(request);
 				//// Add to Identity Server
-				await RegService.AddRegistrationAsync(registrationRequest);
+				await RegService.RegisterUserAsync(registrationRequest);
 			}
 			catch (AmazonDynamoDBException e)
 			{
-				this.Response.StatusCode = (int)e.StatusCode;
-				var writer = new StreamWriter(this.Response.Body);
-				writer.Write(e.Message);
+				Logger.LogCritical(e.Message, e);
 			}
 			catch (Exception exc)
 			{
-				var writer = new StreamWriter(this.Response.Body);
-				writer.Write(exc.Message);
+				Logger.LogCritical(exc.Message, exc);
 			}
 		}
 	}

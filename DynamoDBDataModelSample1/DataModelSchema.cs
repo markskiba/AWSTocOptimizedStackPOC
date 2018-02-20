@@ -15,14 +15,10 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using Amazon.DynamoDBv2.DataModel;
 using Amazon.DynamoDBv2.DocumentModel;
 using System.Xml.Serialization;
 using System.IO;
-using System.Xml;
 
 namespace AwsDynamoDBDataModelSample1
 {

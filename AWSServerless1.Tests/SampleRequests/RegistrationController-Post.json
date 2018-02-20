@@ -30,5 +30,5 @@
     "httpMethod": "POST",
     "apiId": "t2yh6sjnmk"
   },
-  "body": "{\"UserName\": \"TestUser\",\"EMailAddress\": \"EMail@gmail.com\",\"Password\": \"Test123!\",\"CompanyName\": \"ACME Chemicals\"}"
+  "body": "{\"UserName\": \"TestUser\",\"EMailAddress\": \"markwskiba@gmail.com\",\"Password\": \"Test123!\",\"CompanyName\": \"ACME Chemicals\"}"
 }

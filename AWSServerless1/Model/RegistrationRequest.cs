@@ -1,6 +1,4 @@
-﻿using System.ServiceModel.Security;
-
-namespace AWSServerlessWebApi.Controllers
+﻿namespace AWSServerlessWebApi.Controllers
 {
 	/// <summary>
 	/// RegistrationRequest message for Registration service post

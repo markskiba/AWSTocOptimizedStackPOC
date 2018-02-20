@@ -60,4 +60,10 @@
     <DotNetCliToolReference Include="Amazon.Lambda.Tools" Version="2.1.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="aws-lambda-tools-defaults.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
