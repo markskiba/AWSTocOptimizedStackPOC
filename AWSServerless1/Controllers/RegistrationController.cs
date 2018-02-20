@@ -62,13 +62,11 @@ namespace AWSServerlessWebApi.Controllers
 		{
 			try
 			{
-				//var seekableStream = new MemoryStream();
-				//await this.Request.Body.CopyToAsync(seekableStream);
-				//seekableStream.Position = 0;
-
+				// Validate object by deserializing into POCO
 				var sr = new StreamReader(Request.Body);
 				string request = await sr.ReadToEndAsync();
 				var registrationRequest = JsonConvert.DeserializeObject<RegistrationRequest>(request);
+
 				//// Add to Identity Server
 				await RegService.RegisterUserAsync(registrationRequest);
 			}
