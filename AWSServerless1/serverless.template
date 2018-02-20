@@ -14,14 +14,19 @@
         "Description" : "Name of S3 bucket that will be proxied. If left blank a new table will be created.",
         "MinLength" : "0"
     },
-    "UserPoolId" : {
+    "CognitoUserPoolId" : {
       "Type" : "String",
       "Description" : "Name of S3 bucket that will be proxied. If left blank a new table will be created.",
       "MinLength" : "0"
     },
-	"ClientId": {
+	"CognitoClientId": {
       "Type" : "String",
       "Description" : "Client Id associated with Cognito User Pool",
+      "MinLength" : "0"
+    },
+	"CognitoRegion": {
+      "Type" : "String",
+      "Description" : "Region associated with Cognito User Pool",
       "MinLength" : "0"
     },
     "ShouldCreateTable" : {
@@ -57,27 +62,31 @@
 
   "Resources" : {
 
-	  "Get" : {
+
+	"Post" : {
       "Type" : "AWS::Serverless::Function",
       "Properties": {
         "Handler": "AWSServerless1::AWSServerless1.LambdaEntryPoint::FunctionHandlerAsync",
         "Runtime": "dotnetcore2.0",
         "CodeUri": "",
+        "Description": "Function to get register a user",
         "MemorySize": 256,
         "Timeout": 30,
         "Role": null,
         "Policies": [ "AWSLambdaFullAccess" ],
         "Environment" : {
           "Variables" : {
-            "AppS3Bucket" : { "Fn::If" : ["CreateS3Bucket", {"Ref":"Bucket"}, { "Ref" : "BucketName" } ] }
+            "UserPoolId" : {"Ref" : "CognitoUserPoolId"  },
+			"ClientId" : {"Ref" : "CognitoClientId"  },
+			"Region": {"Ref" : "CognitoRegion"  }
           }
         },
         "Events": {
           "PutResource": {
             "Type": "Api",
             "Properties": {
-              "Path": "/{proxy+}",
-              "Method": "ANY"
+              "Path": "api/register",
+              "Method": "POST"
             }
           }
         }

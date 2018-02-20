@@ -16,7 +16,8 @@
   "stack-name": "SupplierPortalStack",
   "stack-wait": false,
   "AppS3Bucket": "",
-  "UserPoolId": "us-east-2_YobCwhRLu",
-  "ClientId": "2cphdf4o7aftg5fe6iq0de3fmo",
+  "CognitoRegion": "us-east-2",
+  "CognitoUserPoolId": "us-east-2_YobCwhRLu",
+  "CognitoClientId": "2cphdf4o7aftg5fe6iq0de3fmo",
   "AuthFlow": "AuthFlowType.ADMIN_NO_SRP_AUTH"
 }

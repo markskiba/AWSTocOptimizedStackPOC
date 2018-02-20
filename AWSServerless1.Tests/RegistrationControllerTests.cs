@@ -19,9 +19,6 @@ namespace AWSServerlessWebApi.Tests
 			var request = JsonConvert.DeserializeObject<APIGatewayProxyRequest>(requestStr);
 			var context = new TestLambdaContext();
 			var response = await lambdaFunction.FunctionHandlerAsync(request, context);
-
-
-
 		}
 
 		// TODO Round trip test with get

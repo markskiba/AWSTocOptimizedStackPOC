@@ -1,6 +1,6 @@
 ﻿{
   "resource": "/{proxy+}",
-  "path": "/api/registration",
+  "path": "api/registration",
   "httpMethod": "POST",
   "headers": null,
   "queryStringParameters": null,

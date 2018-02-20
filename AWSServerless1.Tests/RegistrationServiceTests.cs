@@ -59,7 +59,6 @@ namespace AWSServerlessWebApi.Tests
 							};
 			_dataStoreMock.Verify();
 			
-			//Assert.Equal(_dataStoreMock.ToUrn());
 			
 		}
     }

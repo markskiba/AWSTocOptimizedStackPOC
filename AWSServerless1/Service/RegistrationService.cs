@@ -12,14 +12,14 @@ using Microsoft.Extensions.Logging;
 
 namespace AWSServerlessWebApi.Service
 {
+	/// <summary>
+	/// Cognito RegistrationService implementation
+	/// </summary>
     public class RegistrationService
     {
-		private static readonly string UserPoolIdKey= "UserPoolId";
-		private static readonly string ClientIdKey = "ClientIdId";
-		private static readonly string AuthFlowKey = "AuthFlow";
-		private readonly string COGNITO_USER_POOL_ID_ENVIRONMENT_VARIABLE_LOOKUP= "UserPoolId";
-		private string APPLICATION_CLIENT_ID_ENVIRONMENT_VARIABLE_LOOKUP= "ClientId";
-		private string REGION_ENVIRONMENT_VARIABLE_LOOKUP = "region";
+		private readonly string COGNITO_USER_POOL_ID_ENVIRONMENT_VARIABLE_LOOKUP= "CognitoUserPoolId";
+		private readonly string APPLICATION_CLIENT_ID_ENVIRONMENT_VARIABLE_LOOKUP = "CognitoClientId";
+		private readonly string REGION_ENVIRONMENT_VARIABLE_LOOKUP = "CognitoRegion";
 
 		// custom attributes
 		public readonly string CompanyNameAttribute = "custom:company";
