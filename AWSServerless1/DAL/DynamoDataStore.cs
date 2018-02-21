@@ -8,7 +8,7 @@ using Amazon.DynamoDBv2.DocumentModel;
 using Amazon.DynamoDBv2.Model;
 using Amazon.Util;
 using AWSServerlessWebApi.Model;
-using ServiceStack;
+//using ServiceStack;
 using DynamoDBContextConfig = Amazon.DynamoDBv2.DataModel.DynamoDBContextConfig;
 
 namespace AWSServerlessWebApi.DAL
@@ -86,9 +86,11 @@ namespace AWSServerlessWebApi.DAL
 		/// </summary>
 		/// <param name="userID"></param>
 		/// <returns></returns>
-		public User GetUserByID(string userID) {
-			var userSearch = Context.QueryAsync<User>(userID,QueryOperator.Equal,null);
-			return (userSearch.ConvertTo<User>());
+		public User GetUserByID(string userID)
+		{
+			//var userSearch = Context.QueryAsync<User>(userID,QueryOperator.Equal,null);
+			//return (userSearch.ConvertTo<User>());
+			return new User();
 		}
 
 		/// <inheritdoc />

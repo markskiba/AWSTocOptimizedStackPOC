@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Swashbuckle.AspNetCore.Swagger;
 
 namespace AWSServerlessWebApi
 {
@@ -36,11 +35,6 @@ namespace AWSServerlessWebApi
             // Add S3 to the ASP.NET Core dependency injection framework.
             services.AddAWSService<Amazon.S3.IAmazonS3>();
 			services.AddAWSService<IAmazonDynamoDB>();
-
-			services.AddSwaggerGen(c =>
-								   {
-									   c.SwaggerDoc("v1", new Info { Title = "Contacts API", Version = "v1" });
-								   });
 		}
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline
@@ -48,11 +42,6 @@ namespace AWSServerlessWebApi
         {
             loggerFactory.AddLambdaLogger(Configuration.GetLambdaLoggerOptions());
             app.UseMvc();
-			app.UseSwagger();
-			//app.UseSwaggerUI(c =>
-			//				 {
-			//					 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Contacts API V1");
-			//				 });
 		}
     }
 }
