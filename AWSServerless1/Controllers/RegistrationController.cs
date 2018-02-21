@@ -16,10 +16,10 @@ namespace AWSServerlessWebApi.Controllers
 	[Microsoft.AspNetCore.Mvc.Route("api/[controller]")]
 	public class RegistrationController : Controller
 	{
-		ILogger Logger { get; set; }
+		private ILogger Logger { get; }
 
 
-		private RegistrationService RegService { get; set; }
+		private RegistrationService RegService { get; }
 
 
 		/// <summary>
