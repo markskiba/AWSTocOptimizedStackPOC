@@ -15,7 +15,7 @@ namespace AWSServerlessWebApi.Model
 	}
 
 	public class Update {
-		public string Author;
+		public string UserName;
 		public DateTime Date;
 	}
 }
