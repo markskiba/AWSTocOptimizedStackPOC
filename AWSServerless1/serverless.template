@@ -82,11 +82,11 @@
           }
         },
         "Events": {
-          "PostResource": {
+          "SupplierPortalApiResource": {
             "Type": "Api",
             "Properties": {
-              "Path": "/api/register",
-              "Method": "POST"
+              "Path": "/{proxy+}",
+              "Method": "ANY"
             }
           }
         }

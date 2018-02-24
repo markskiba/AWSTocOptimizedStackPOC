@@ -12,7 +12,7 @@
     "framework"     : "netcoreapp2.0",
     "s3-prefix"     : "AWSServerless1/",
     "template"      : "serverless.template",
-    "template-parameters" : "\"ShouldCreateBucket\"=\"true\";\"BucketName\"=\"\";\"CognitoUserPoolId\"=\"us-east-2_YobCwhRLu\";\"CognitoClientId\"=\"2cphdf4o7aftg5fe6iq0de3fmo\";\"CognitoRegion\"=\"us-east-2\";\"ShouldCreateTable\"=\"false\";\"UserTableName\"=\"User\";\"ReadCapacity\"=\"3\";\"WriteCapacity\"=\"3\"",
+    "template-parameters" : "\"ShouldCreateBucket\"=\"false\";\"BucketName\"=\"supplier-portal-documents-dev\";\"CognitoUserPoolId\"=\"us-east-2_YobCwhRLu\";\"CognitoClientId\"=\"2cphdf4o7aftg5fe6iq0de3fmo\";\"CognitoRegion\"=\"us-east-2\";\"ShouldCreateTable\"=\"false\";\"UserTableName\"=\"User\";\"ReadCapacity\"=\"3\";\"WriteCapacity\"=\"3\"",
     "s3-bucket"           : "supplier-portal-dev",
     "stack-name"          : "SupplierPortalStack",
     "stack-wait"          : false,

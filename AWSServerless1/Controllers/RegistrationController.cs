@@ -28,7 +28,7 @@ namespace AWSServerlessWebApi.Controllers
 		/// <param name="logger"></param>
 		public RegistrationController(ILogger<RegistrationController> logger) {
 			Logger = logger;
-
+			Logger.LogInformation("RegistrationController()");
 			RegService = new RegistrationService(logger);
 		}
 
