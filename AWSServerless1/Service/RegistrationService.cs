@@ -31,13 +31,31 @@ namespace AWSServerlessWebApi.Service
 
 		public string CognitoClientId { get; set; }
 
+		/// <summary>
+		/// Registration Service constructor
+		/// </summary>
+		/// <param name="logger"></param>
 		public RegistrationService(ILogger logger) {
 			_logger = logger;
-			// Check to see if a table name was passed in through environment variables and if so 
-			// add the table mapping.
+			string join = Environment.GetEnvironmentVariables() is Dictionary<string, string> env? string.Join(";", env?.Select(x => x.Key + "=" + x.Value)): "Environment.GetEnvironmentVariables()=null";
+			_logger.LogInformation($"Environment:{join}");
+			// Ensure all required environment variables are provided
 			CognitoClientId = Environment.GetEnvironmentVariable(APPLICATION_CLIENT_ID_ENVIRONMENT_VARIABLE_LOOKUP);
+			if (CognitoUserPoolId == null)
+			{
+				throw new Exception($"Missing required environment variable {APPLICATION_CLIENT_ID_ENVIRONMENT_VARIABLE_LOOKUP}");
+			}
+
 			CognitoUserPoolId = Environment.GetEnvironmentVariable(COGNITO_USER_POOL_ID_ENVIRONMENT_VARIABLE_LOOKUP);
+			if (CognitoUserPoolId == null)
+			{
+				throw new Exception($"Missing required environment variable {COGNITO_USER_POOL_ID_ENVIRONMENT_VARIABLE_LOOKUP}");
+			}
 			string region = Environment.GetEnvironmentVariable(REGION_ENVIRONMENT_VARIABLE_LOOKUP);
+			if (region == null) {
+				throw new Exception($"Missing required environment variable {REGION_ENVIRONMENT_VARIABLE_LOOKUP}");
+			}
+
 			var config = new AmazonCognitoIdentityProviderConfig()
 							 {
 								 AuthenticationRegion = region,

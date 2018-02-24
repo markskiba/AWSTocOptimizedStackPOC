@@ -62,8 +62,7 @@
 
   "Resources" : {
 
-
-	"Post" : {
+	"SupplierPortalApis" : {
       "Type" : "AWS::Serverless::Function",
       "Properties": {
         "Handler": "AWSServerlessWebApi::AWSServerlessWebApi.LambdaEntryPoint::FunctionHandlerAsync",
@@ -76,9 +75,9 @@
         "Policies": [ "AWSLambdaFullAccess" ],
         "Environment" : {
           "Variables" : {
-            "UserPoolId" : {"Ref" : "CognitoUserPoolId"  },
-			"ClientId" : {"Ref" : "CognitoClientId"  },
-			"Region": {"Ref" : "CognitoRegion"  }
+            "CognitoUserPoolId" : {"Ref" : "CognitoUserPoolId"  },
+			"CognitoClientId" : {"Ref" : "CognitoClientId"  },
+			"CognitoRegion": {"Ref" : "CognitoRegion"  }
           }
         },
         "Events": {
