@@ -1,0 +1,61 @@
+{
+  "AWSTemplateFormatVersion" : "2010-09-09",
+  "Transform" : "AWS::Serverless-2016-10-31",
+  "Description" : "Supplier Portal Service AWS Serverless Application that uses the ASP.NET Core framework running in Amazon Lambda.",
+
+  "Parameters" : {
+    "CognitoUserPoolId" : {
+      "Type" : "String",
+      "Description" : "Name of S3 bucket that will be proxied. If left blank a new table will be created.",
+      "MinLength" : "0"
+    },
+	"CognitoClientId": {
+      "Type" : "String",
+      "Description" : "Client Id associated with Cognito User Pool",
+      "MinLength" : "0"
+    },
+	"CognitoRegion": {
+      "Type" : "String",
+      "Description" : "Region associated with Cognito User Pool",
+      "MinLength" : "0"
+    }
+  },
+
+
+  "Resources" : {
+
+	"SupplierPortalApis" : {
+      "Type" : "AWS::Serverless::Function",
+      "Properties": {
+        "Handler": "AWSServerlessWebApi::AWSServerlessWebApi.LambdaEntryPoint::FunctionHandlerAsync",
+        "Runtime": "dotnetcore2.0",
+        "CodeUri": "",
+        "Description": "Function to register a user",
+        "MemorySize": 256,
+        "Timeout": 30,
+        "Role": null,
+        "Policies": [ "AWSLambdaFullAccess" ],
+        "Environment" : {
+          "Variables" : {
+            "CognitoUserPoolId" : {"Ref" : "CognitoUserPoolId"  },
+			"CognitoClientId" : {"Ref" : "CognitoClientId"  },
+			"CognitoRegion": {"Ref" : "CognitoRegion"  }
+          }
+        },
+        "Events": {
+          "SupplierPortalApiResource": {
+            "Type": "Api",
+            "Properties": {
+              "Path": "/{proxy+}",
+              "Method": "ANY"
+            }
+          }
+        }
+      }
+    }
+
+  },
+
+  "Outputs" : {
+  }
+}
