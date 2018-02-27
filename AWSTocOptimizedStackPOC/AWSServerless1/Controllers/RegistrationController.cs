@@ -63,7 +63,7 @@ namespace AWSServerlessWebApi.Controllers
 		[HttpPost]
 		public async Task Post() 
 		{
-			Response.ContentType = "application/json";
+			//Response.ContentType = "application/json";
 			try
 			{
 				Logger.LogInformation("Entered RegistrationController.Post()");
@@ -79,13 +79,13 @@ namespace AWSServerlessWebApi.Controllers
 			}
 			catch (AmazonDynamoDBException e)
 			{
-				Logger.LogCritical(e.Message, e);
+				Logger.LogCritical("AmazonDynamoDBException:" + e.Message, e);
 				var resp = JsonConvert.SerializeObject(e.Message);
 				Response.Body = new MemoryStream(Encoding.UTF8.GetBytes(resp));
 			}
 			catch (Exception exc)
 			{
-				Logger.LogCritical(exc.Message, exc);
+				Logger.LogCritical("Exception:" + exc.Message, exc);
 				var resp = JsonConvert.SerializeObject(exc.Message);
 				Response.Body = new MemoryStream(Encoding.UTF8.GetBytes(resp));
 			}

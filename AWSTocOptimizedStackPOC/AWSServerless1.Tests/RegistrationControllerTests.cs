@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Amazon.Lambda.APIGatewayEvents;
 using Amazon.Lambda.TestUtilities;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using Xunit;
 
@@ -10,6 +11,8 @@ namespace AWSServerlessWebApi.Tests
     public class RegistrationControllerTests : AppSettingsFixture
 	{
 		//IConfigurationRoot Configuration { get; set; }
+		public RegistrationControllerTests() {
+		}
 
 		[Fact]
 		public async Task TestPost() {
