@@ -46,7 +46,7 @@ namespace AWSServerlessWebApi.Tests
 											  CompanyName = "Test Company",
 											  EMailAddress = "markwskiba@gmail.com",
 											  Password = "1Asdfghi!",
-											  UserName = "TestUser"
+											  UserName = "TestUser4"
 										  };
 			var regService = new RegistrationService((ILogger)loggerMock.Object);
 			var response = await regService.RegisterUserAsync(registrationRequest);

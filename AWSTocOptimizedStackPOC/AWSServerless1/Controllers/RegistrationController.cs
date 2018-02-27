@@ -1,5 +1,8 @@
 ﻿using System;
 using System.IO;
+using System.Text;
+using System.Threading.Tasks;
+using Amazon.CognitoIdentityProvider.Model;
 using Amazon.DynamoDBv2;
 using AWSServerlessWebApi.Service;
 using Microsoft.AspNetCore.Mvc;
@@ -58,25 +61,33 @@ namespace AWSServerlessWebApi.Controllers
 		/// </summary>
 		/// <returns>void</returns>
 		[HttpPost]
-		public async void Post() 
+		public async Task Post() 
 		{
+			Response.ContentType = "application/json";
 			try
 			{
+				Logger.LogInformation("Entered RegistrationController.Post()");
 				// Validate object by deserializing into POCO
 				var sr = new StreamReader(Request.Body);
 				string request = await sr.ReadToEndAsync();
 				var registrationRequest = JsonConvert.DeserializeObject<RegistrationRequest>(request);
 
-				//// Add to Identity Server
-				await RegService.RegisterUserAsync(registrationRequest);
+				// Add to Identity Server
+				SignUpResponse getResponse = await RegService.RegisterUserAsync(registrationRequest);
+				var resp = JsonConvert.SerializeObject(getResponse);
+				Response.Body = new MemoryStream(Encoding.UTF8.GetBytes(resp));
 			}
 			catch (AmazonDynamoDBException e)
 			{
 				Logger.LogCritical(e.Message, e);
+				var resp = JsonConvert.SerializeObject(e.Message);
+				Response.Body = new MemoryStream(Encoding.UTF8.GetBytes(resp));
 			}
 			catch (Exception exc)
 			{
 				Logger.LogCritical(exc.Message, exc);
+				var resp = JsonConvert.SerializeObject(exc.Message);
+				Response.Body = new MemoryStream(Encoding.UTF8.GetBytes(resp));
 			}
 		}
 	}
