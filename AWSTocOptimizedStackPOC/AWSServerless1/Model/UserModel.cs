@@ -7,7 +7,7 @@ namespace AWSServerlessWebApi.Model
 	///</summary> 
 	/// <inheritdoc />
 	[DynamoDBTable("Users")]
-	public class User: Trackable {
+	public class UserModel: BaseModel {
 
 
 		/// <summary>
@@ -21,7 +21,5 @@ namespace AWSServerlessWebApi.Model
 		/// </summary>
 		[DynamoDBProperty("EMail")]
 		public string EMail { get; set; }
-
-
 	}
 }

@@ -7,13 +7,13 @@ namespace AWSServerlessWebApi.DAL {
 		/// </summary>
 		/// <param name="userID"></param>
 		/// <returns></returns>
-		User GetUserByID(string userID);
+		UserModel GetUserByID(string userID);
 
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="userID"></param>
 		/// <returns></returns>
-		void AddUser(User user);
+		void AddUser(UserModel user);
 	}
 }

@@ -1,4 +1,4 @@
-﻿namespace AWSServerlessWebApi.Controllers
+﻿namespace AWSServerlessWebApi.Messages
 {
 	/// <summary>
 	/// RegistrationRequest message for Registration service post

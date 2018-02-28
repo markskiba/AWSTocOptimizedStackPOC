@@ -41,7 +41,7 @@ namespace AWSServerlessWebApi.DAL
 			var tableName = Environment.GetEnvironmentVariable(USER_TABLENAME_ENVIRONMENT_VARIABLE_LOOKUP);
 			if (!String.IsNullOrEmpty(tableName))
 			{
-				AWSConfigsDynamoDB.Context.TypeMappings[typeof(User)] = new TypeMapping(typeof(User), tableName);
+				AWSConfigsDynamoDB.Context.TypeMappings[typeof(UserModel)] = new TypeMapping(typeof(UserModel), tableName);
 			}
 
 			var config = new DynamoDBContextConfig { Conversion = DynamoDBEntryConversion.V2 };
@@ -86,11 +86,11 @@ namespace AWSServerlessWebApi.DAL
 		/// </summary>
 		/// <param name="userID"></param>
 		/// <returns></returns>
-		public User GetUserByID(string userID)
+		public UserModel GetUserByID(string userID)
 		{
 			//var userSearch = Context.QueryAsync<User>(userID,QueryOperator.Equal,null);
 			//return (userSearch.ConvertTo<User>());
-			return new User();
+			return new UserModel();
 		}
 
 		/// <inheritdoc />
@@ -98,7 +98,7 @@ namespace AWSServerlessWebApi.DAL
 		/// </summary>
 		/// <param name="user"></param>
 		/// <returns></returns>
-		public void AddUser (User user) {
+		public void AddUser (UserModel user) {
 			Context.SaveAsync(user);
 		}
 	}

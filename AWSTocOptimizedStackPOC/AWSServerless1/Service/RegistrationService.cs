@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Amazon;
 using Amazon.CognitoIdentityProvider;
 using Amazon.CognitoIdentityProvider.Model;
+using Amazon.Runtime;
 using Amazon.Runtime.CredentialManagement;
 using AWSServerlessWebApi.Controllers;
 using AWSServerlessWebApi.DAL;
+using AWSServerlessWebApi.Messages;
 using Microsoft.Extensions.Logging;
 
 namespace AWSServerlessWebApi.Service
@@ -77,9 +80,7 @@ namespace AWSServerlessWebApi.Service
 		/// Add custom attributes if not yet setup
 		/// </summary>
 		private async Task InitializeCustomAttributes() {
-
-
-
+			
 				var userPoolRequest = new DescribeUserPoolRequest()
 										  {
 											  UserPoolId = CognitoUserPoolId
@@ -114,7 +115,7 @@ namespace AWSServerlessWebApi.Service
 		/// </summary>
 		/// <param name="regReq"></param>
 		/// <returns></returns>
-		public async Task<SignUpResponse> RegisterUserAsync(RegistrationRequest regReq)
+		public async Task<RegistrationPostResponse> RegisterUserAsync(RegistrationRequest regReq)
 		{
 			// Register the user using Cognito
 			var signUpRequest = new SignUpRequest
@@ -135,9 +136,39 @@ namespace AWSServerlessWebApi.Service
 				{
 				Name = CompanyNameAttribute,
 				Value = regReq.CompanyName
-												 });
+				});
 
-			return await Cognito.SignUpAsync(signUpRequest);
+			RegistrationPostResponse regPostResponse = new RegistrationPostResponse();
+			try {
+				var getResponse = await Cognito.SignUpAsync(signUpRequest);
+				regPostResponse.success = true;
+				regPostResponse.statusCode = getResponse.HttpStatusCode.ToString();
+				regPostResponse.userSub = getResponse.UserSub;
+				regPostResponse.userConfirmed = getResponse.UserConfirmed;
+			}
+			catch (AmazonCognitoIdentityProviderException ace) {
+				regPostResponse.error.message = ace.Message;
+				regPostResponse.success = false;
+				switch (ace.ErrorCode) {
+					case "UsernameExistsException":
+						regPostResponse.error.error = ErrorEnum.UserAlreadyExists;
+						break;
+					case "email already exists":  // not sure what this exception is
+						regPostResponse.error.error = ErrorEnum.UserAlreadyExists;
+						break;
+					default:
+						regPostResponse.error.error = ErrorEnum.Unknown;
+						break;
+				}
+				regPostResponse.error.message = ace.ErrorCode+":"+ace.Message;
+			}
+			catch (Exception e) {
+				regPostResponse.success = false;
+				regPostResponse.error.error = ErrorEnum.Unknown;
+				regPostResponse.error.message = e.Message;
+			}
+															   
+			return regPostResponse;
 		}
     }
 }

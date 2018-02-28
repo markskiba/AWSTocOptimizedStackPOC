@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Amazon.CognitoIdentityProvider.Model;
 using Amazon.DynamoDBv2;
+using AWSServerlessWebApi.Messages;
 using AWSServerlessWebApi.Service;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -73,7 +74,8 @@ namespace AWSServerlessWebApi.Controllers
 				var registrationRequest = JsonConvert.DeserializeObject<RegistrationRequest>(request);
 
 				// Add to Identity Server
-				SignUpResponse getResponse = await RegService.RegisterUserAsync(registrationRequest);
+				var getResponse = await RegService.RegisterUserAsync(registrationRequest);
+
 				var resp = JsonConvert.SerializeObject(getResponse);
 				Response.Body = new MemoryStream(Encoding.UTF8.GetBytes(resp));
 			}
@@ -85,7 +87,7 @@ namespace AWSServerlessWebApi.Controllers
 			}
 			catch (Exception exc)
 			{
-				Logger.LogCritical("Exception:" + exc.Message, exc);
+				Logger.LogCritical("Exception:" + "Inner: "+exc.Message+exc?.InnerException.Message+exc.StackTrace, exc);
 				var resp = JsonConvert.SerializeObject(exc.Message);
 				Response.Body = new MemoryStream(Encoding.UTF8.GetBytes(resp));
 			}

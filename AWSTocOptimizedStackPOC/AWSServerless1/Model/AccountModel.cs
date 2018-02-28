@@ -3,7 +3,7 @@
 namespace AWSServerlessWebApi.Model
 {
 	/// <inheritdoc />
-	public class Account : Trackable {
+	public class Account : BaseModel {
 		/// <summary>
 		/// Company Name
 		/// </summary>
